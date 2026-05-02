@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Frequency Dodge — Zuni's ZenZone</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#000;overflow:hidden;width:100vw;height:100vh;}
+#gc{position:relative;width:100vw;height:100vh;max-width:480px;margin:0 auto;}
+canvas{display:block;width:100%;height:100%;}
+#ui{position:absolute;top:0;left:0;right:0;padding:14px 18px;display:flex;justify-content:space-between;align-items:flex-start;pointer-events:none;z-index:10;}
+#lives{display:flex;gap:6px;}
+.heart{font-size:22px;}
+#scoreBox{text-align:right;}
+#sLabel{font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:3px;color:rgba(255,255,255,0.4);}
+#sVal{font-family:'Orbitron',sans-serif;font-size:28px;font-weight:900;line-height:1;color:#00F5FF;}
+#bVal{font-family:'Orbitron',sans-serif;font-size:9px;color:rgba(255,215,0,0.6);letter-spacing:2px;}
+#fDisplay{position:absolute;top:14px;left:50%;transform:translateX(-50%);text-align:center;pointer-events:none;z-index:10;}
+#fRing{width:58px;height:58px;border-radius:50%;border:3px solid #FF6B9D;display:flex;align-items:center;justify-content:center;margin:0 auto 3px;box-shadow:0 0 14px #FF6B9D;}
+#fHz{font-family:'Orbitron',monospace;font-size:11px;color:white;}
+#fName{font-family:'Orbitron',sans-serif;font-size:7px;letter-spacing:2px;color:rgba(255,255,255,0.35);text-transform:uppercase;}
+.screen{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:20;background:rgba(2,2,10,0.97);padding:28px;text-align:center;}
+.screen.hidden{display:none;}
+.kkc{font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:5px;color:rgba(201,168,76,0.5);margin-bottom:6px;}
+.gtitle{font-family:'Orbitron',sans-serif;font-size:28px;font-weight:900;line-height:1.1;margin-bottom:4px;}
+.gsub{font-family:'Exo 2',sans-serif;font-size:12px;letter-spacing:3px;color:rgba(255,215,0,0.7);text-transform:uppercase;margin-bottom:16px;}
+.how{font-family:'Exo 2',sans-serif;font-size:13px;color:rgba(255,255,255,0.65);line-height:1.8;margin-bottom:20px;max-width:280px;}
+.flist{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-bottom:22px;max-width:300px;}
+.ftag{font-family:'Orbitron',sans-serif;font-size:8px;padding:4px 10px;border-radius:20px;border:1px solid;letter-spacing:1px;}
+.btn{font-family:'Orbitron',sans-serif;font-size:13px;letter-spacing:4px;border:none;border-radius:50px;padding:15px 44px;cursor:pointer;text-transform:uppercase;margin-bottom:10px;-webkit-appearance:none;}
+.btn-p{background:#00F5FF;color:#000;box-shadow:0 0 20px rgba(0,245,255,0.4);}
+.btn-s{background:transparent;color:rgba(255,215,0,0.8);border:1px solid rgba(255,215,0,0.3);font-size:10px;padding:10px 28px;}
+.fscore{font-family:'Orbitron',sans-serif;font-size:60px;font-weight:900;line-height:1;margin:8px 0;}
+.flabel{font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:4px;color:rgba(255,255,255,0.35);}
+.fbadge{font-family:'Orbitron',sans-serif;font-size:10px;padding:6px 16px;border-radius:20px;border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.7);margin-bottom:22px;letter-spacing:2px;}
+#hint{position:absolute;bottom:80px;left:50%;transform:translateX(-50%);font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:2px;color:rgba(255,255,255,0.2);pointer-events:none;z-index:10;white-space:nowrap;}
+</style>
+</head>
+<body>
+<div id="gc">
+<canvas id="c"></canvas>
+<div id="ui">
+  <div id="lives">
+    <span class="heart" id="h0">♥</span>
+    <span class="heart" id="h1">♥</span>
+    <span class="heart" id="h2">♥</span>
+  </div>
+  <div id="scoreBox">
+    <div id="sLabel">SCORE</div>
+    <div id="sVal">0</div>
+    <div id="bVal">BEST 0</div>
+  </div>
+</div>
+<div id="fDisplay">
+  <div id="fRing"><div id="fHz">396</div></div>
+  <div id="fName">Your Frequency</div>
+</div>
+<div id="hint">MATCH color = collect • DODGE wrong colors</div>
+
+<div class="screen" id="startScreen">
+  <div class="kkc">KonshusKreashunCo</div>
+  <div class="gtitle" style="color:#00F5FF;">FREQUENCY<br>DODGE</div>
+  <div class="gsub">Zuni's ZenZone</div>
+  <div class="how">
+    Your ball cycles through the<br>7 solfeggio frequencies.<br><br>
+    <span style="color:#00FF88">● HIT orbs that MATCH your color</span><br>
+    <span style="color:#FF6B9D">● DODGE orbs that DON'T match</span>
+  </div>
+  <div class="flist" id="flist"></div>
+  <button class="btn btn-p" onclick="startGame()">BEGIN</button>
+</div>
+
+<div class="screen hidden" id="goScreen">
+  <div class="kkc">Game Over</div>
+  <div class="gtitle" style="color:#FF6B9D;font-size:20px;margin-bottom:8px;">SESSION COMPLETE</div>
+  <div class="flabel">FINAL SCORE</div>
+  <div class="fscore" id="goScore">0</div>
+  <div class="fbadge" id="goBadge"></div>
+  <button class="btn btn-p" onclick="startGame()" style="margin-bottom:10px;">PLAY AGAIN</button>
+  <button class="btn btn-s" onclick="showStart()">MENU</button>
+</div>
+</div>
+
+<script>
+var canvas = document.getElementById('c');
+var ctx = canvas.getContext('2d');
+var gc = document.getElementById('gc');
+var W, H;
+
+var F = [
+  {hz:396, name:'Liberation',      hex:'#FF6B9D', r:255,g:107,b:157},
+  {hz:432, name:"Nature's Harmony",hex:'#00FF88', r:0,  g:255,b:136},
+  {hz:528, name:'Love Frequency',  hex:'#FF44CC', r:255,g:68, b:204},
+  {hz:639, name:'Connection',      hex:'#4488FF', r:68, g:136,b:255},
+  {hz:741, name:'Awakening',       hex:'#FF8C00', r:255,g:140,b:0  },
+  {hz:852, name:'Third Eye',       hex:'#B444FF', r:180,g:68, b:255},
+  {hz:963, name:'Divine',          hex:'#FFD700', r:255,g:215,b:0  }
+];
+
+function rgba(f, a) { return 'rgba('+f.r+','+f.g+','+f.b+','+a+')'; }
+
+// Build tags
+var fl = document.getElementById('flist');
+for (var i=0; i<F.length; i++) {
+  var d = document.createElement('div');
+  d.className = 'ftag';
+  d.style.color = F[i].hex;
+  d.style.borderColor = rgba(F[i], 0.4);
+  d.style.background = rgba(F[i], 0.08);
+  d.textContent = F[i].hz+'Hz';
+  fl.appendChild(d);
+}
+
+function resize() { W = canvas.width = gc.clientWidth; H = canvas.height = gc.clientHeight; }
+resize();
+window.addEventListener('resize', resize);
+
+var running=false, score=0, best=parseInt(localStorage.getItem('zzfd')||'0');
+var lives=3, level=0, frameN=0, pfi=0, cTimer=0;
+var C_TIME = 720;
+var warnShown = false;
+var px=0, py=0, invT=0;
+var orbs=[], parts=[], stars=[];
+
+function pf() { return F[pfi]; }
+
+function updateUI() {
+  var f = pf();
+  document.getElementById('sVal').textContent = score;
+  document.getElementById('sVal').style.color = f.hex;
+  document.getElementById('bVal').textContent = 'BEST '+best;
+  document.getElementById('fHz').textContent = f.hz;
+  document.getElementById('fRing').style.borderColor = f.hex;
+  document.getElementById('fRing').style.boxShadow = '0 0 14px '+f.hex;
+  for (var i=0; i<3; i++) {
+    var h = document.getElementById('h'+i);
+    h.style.opacity = i<lives ? '1' : '0.1';
+    h.style.color = i<lives ? '#FF6B9D' : '#333';
+  }
+}
+
+function initStars() {
+  stars = [];
+  for (var i=0; i<80; i++) {
+    stars.push({x:Math.random()*W, y:Math.random()*H, r:Math.random()*1.2+0.3, s:Math.random()*0.3+0.08, a:Math.random()*0.5+0.15});
+  }
+}
+
+function spawnOrb() {
+  // 70% chance of matching your color always, more after 50 points
+  var matchChance = score >= 50 ? 0.75 : 0.65;
+  var fi = Math.random() < matchChance ? pfi : Math.floor(Math.random()*F.length);
+  var speedBoost = score >= 50 ? 1.35 : 1.0;
+  var size = 14 + Math.random()*13 + level;
+  var speed = (1.4 + level*0.25 + Math.random()*1.2) * speedBoost;
+  var x = size + Math.random()*(W - size*2);
+  orbs.push({x:x, y:-size*2, size:size, speed:speed, fi:fi});
+}
+
+function burst(x, y, fi, n) {
+  for (var i=0; i<n; i++) {
+    var a = (Math.PI*2/n)*i + Math.random()*0.4;
+    var sp = 2 + Math.random()*3.5;
+    parts.push({x:x, y:y, vx:Math.cos(a)*sp, vy:Math.sin(a)*sp, fi:fi, life:28+Math.random()*16, ml:44, sz:2.5+Math.random()*2});
+  }
+}
+
+function drawCircle(x, y, r, color) {
+  ctx.beginPath();
+  ctx.arc(x, y, r, 0, Math.PI*2);
+  ctx.fillStyle = color;
+  ctx.fill();
+}
+
+function loop() {
+  if (!running) return;
+  frameN++;
+
+  // Background
+  ctx.fillStyle = '#020208';
+  ctx.fillRect(0, 0, W, H);
+
+  // Stars
+  var i, s;
+  for (i=0; i<stars.length; i++) {
+    s = stars[i];
+    s.y += s.s;
+    if (s.y > H) { s.y = 0; s.x = Math.random()*W; }
+    drawCircle(s.x, s.y, s.r, 'rgba(255,255,255,'+s.a+')');
+  }
+
+  // Color cycle - warn at 80% then change at 100%
+  cTimer++;
+  // Show warning when 80% through
+  if (cTimer === Math.floor(C_TIME * 0.8) && !warnShown) {
+    warnShown = true;
+    var nf = F[(pfi+1) % F.length];
+    document.getElementById('fName').textContent = 'CHANGING TO '+nf.hz+'Hz!';
+    document.getElementById('fName').style.color = nf.hex;
+  }
+  if (cTimer >= C_TIME) {
+    cTimer = 0;
+    warnShown = false;
+    pfi = (pfi+1) % F.length;
+    // Clear all non-matching orbs when color changes so player isn't ambushed
+    orbs = orbs.filter(function(o){ return o.fi === pfi; });
+    document.getElementById('fName').textContent = 'YOUR FREQUENCY';
+    document.getElementById('fName').style.color = 'rgba(255,255,255,0.35)';
+    updateUI();
+    beep(pf().hz * 0.5, 0.12, 'sine', 0.06);
+    beep(pf().hz, 0.08, 'sine', 0.04, 0.13);
+  }
+
+  // Level up
+  var nl = Math.floor(score/30);
+  if (nl > level) {
+    level = nl;
+    beep(800, 0.08, 'sine', 0.07);
+  }
+
+  // Spawn - faster after 50 points
+  var rate = score >= 50 ? Math.max(14, 40 - level*3) : Math.max(22, 55 - level*3);
+  if (frameN % rate === 0) spawnOrb();
+
+  // Draw orbs
+  var toRemove = [];
+  var f = pf();
+  for (i=0; i<orbs.length; i++) {
+    var o = orbs[i];
+    if (!running) return;
+    o.y += o.speed;
+    if (o.y > H + o.size*2) { toRemove.push(i); continue; }
+    var of = F[o.fi];
+
+    // Shadow circle (glow effect without gradient)
+    drawCircle(o.x, o.y, o.size*1.6, rgba(of, 0.25));
+    drawCircle(o.x, o.y, o.size*1.2, rgba(of, 0.4));
+    // Main ball
+    drawCircle(o.x, o.y, o.size, of.hex);
+    // Highlight
+    drawCircle(o.x - o.size*0.3, o.y - o.size*0.3, o.size*0.35, 'rgba(255,255,255,0.5)');
+
+    // Collision
+    var dist = Math.sqrt((o.x-px)*(o.x-px) + (o.y-py)*(o.y-py));
+    if (dist < o.size + 13) {
+      if (o.fi === pfi) {
+        burst(o.x, o.y, o.fi, 10);
+        score += 5;
+        if (score > best) { best = score; localStorage.setItem('zzfd', best); }
+        beep(1100, 0.07, 'sine', 0.07);
+        toRemove.push(i);
+        updateUI();
+      } else if (invT <= 0) {
+        burst(px, py, 0, 8);
+        lives--;
+        score = Math.max(0, score-3);
+        invT = 70;
+        beep(180, 0.12, 'square', 0.1);
+        toRemove.push(i);
+        updateUI();
+        if (lives <= 0) { endGame(); return; }
+      }
+    }
+  }
+  // Remove used orbs (reverse to keep indices valid)
+  for (i=toRemove.length-1; i>=0; i--) orbs.splice(toRemove[i], 1);
+
+  if (!running) return;
+  if (invT > 0) invT--;
+
+  // Particles
+  var newParts = [];
+  for (i=0; i<parts.length; i++) {
+    var p = parts[i];
+    p.x += p.vx; p.y += p.vy; p.vy += 0.07; p.life--;
+    if (p.life > 0) {
+      var pa = p.life / p.ml;
+      drawCircle(p.x, p.y, p.sz*pa, rgba(F[p.fi], pa));
+      newParts.push(p);
+    }
+  }
+  parts = newParts;
+
+  // Player
+  var blink = invT>0 && frameN%8<4;
+  if (!blink) {
+    // Outer glow rings
+    drawCircle(px, py, 28, rgba(f, 0.15));
+    drawCircle(px, py, 20, rgba(f, 0.25));
+    // Main player ball
+    drawCircle(px, py, 14, f.hex);
+    // Highlight
+    drawCircle(px-4, py-4, 5, 'rgba(255,255,255,0.6)');
+    // Bar below player
+    ctx.fillStyle = rgba(f, 0.7);
+    ctx.fillRect(px-34, py+18, 68, 5);
+  }
+
+  requestAnimationFrame(loop);
+}
+
+function startGame() {
+  initAudio();
+  document.getElementById('startScreen').classList.add('hidden');
+  document.getElementById('goScreen').classList.add('hidden');
+  score=0; lives=3; level=0; frameN=0; pfi=0; cTimer=0; invT=0; warnShown=false;
+  orbs=[]; parts=[];
+  px=W/2; py=H*0.75;
+  initStars();
+  updateUI();
+  running=true;
+  startMusic();
+  loop();
+}
+
+function endGame() {
+  running=false;
+  stopMusic();
+  beep(350, 0.1, 'square', 0.1);
+  setTimeout(function(){ beep(250, 0.1, 'square', 0.1); }, 150);
+  setTimeout(function(){ beep(150, 0.3, 'sawtooth', 0.1); }, 300);
+  var f = pf();
+  document.getElementById('goScore').textContent = score;
+  document.getElementById('goScore').style.color = f.hex;
+  document.getElementById('goBadge').textContent = f.hz+' Hz — '+f.name;
+  document.getElementById('goScreen').classList.remove('hidden');
+}
+
+function showStart() {
+  running=false; stopMusic();
+  document.getElementById('goScreen').classList.add('hidden');
+  document.getElementById('startScreen').classList.remove('hidden');
+}
+
+function movePx(cx) {
+  var rect = canvas.getBoundingClientRect();
+  var scaleX = W / rect.width;
+  px = Math.max(20, Math.min(W-20, (cx - rect.left) * scaleX));
+}
+canvas.addEventListener('mousemove', function(e){ if(running) movePx(e.clientX); });
+canvas.addEventListener('touchmove', function(e){ e.preventDefault(); if(running) movePx(e.touches[0].clientX); }, {passive:false});
+canvas.addEventListener('touchstart', function(e){ e.preventDefault(); if(running) movePx(e.touches[0].clientX); }, {passive:false});
+
+// ===== AUDIO (Safari-safe) =====
+var actx=null, mOn=false, mTimer=null, mI=0, bI=0;
+
+function initAudio() {
+  if (actx) return;
+  try { actx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) {}
+}
+
+function beep(freq, dur, type, vol) {
+  if (!actx) return;
+  try {
+    if (actx.state === 'suspended') actx.resume();
+    var o = actx.createOscillator();
+    var g = actx.createGain();
+    o.connect(g);
+    g.connect(actx.destination);
+    o.type = type || 'square';
+    o.frequency.value = freq;
+    g.gain.setValueAtTime(vol || 0.06, actx.currentTime);
+    g.gain.linearRampToValueAtTime(0, actx.currentTime + dur);
+    o.start(actx.currentTime);
+    o.stop(actx.currentTime + dur + 0.02);
+  } catch(e) {}
+}
+
+var MEL=[440,0,494,0,440,0,392,0,440,0,494,0,523,0,494,0,440,0,392,0,330,0,392,0,440,494,0,440,0,392,0,349,0,392,0,440,0,494,0,523,587,0,523,0,494,0,440,0,494,523,0,494,0,440,0,392,0,440,0,494,0,523,0,587,0,659,0,587,0,523,0,494,0,440,0];
+var BAS=[110,0,110,0,147,0,147,0,131,0,131,0,98,0,98,0,110,0,110,0,147,0,147,0,131,0,131,0,98,0,98,0];
+
+function startMusic() {
+  if (mOn || !actx) return;
+  mOn=true; mI=0; bI=0;
+  if (actx.state==='suspended') actx.resume();
+  function tick() {
+    if (!mOn) return;
+    var m=MEL[mI%MEL.length], b=BAS[bI%BAS.length];
+    if (m>0) beep(m, 0.09, 'sawtooth', 0.055);
+    if (b>0) beep(b, 0.14, 'square', 0.065);
+    if (bI%4===0) beep(60, 0.055, 'sawtooth', 0.1);
+    if (bI%4===2) beep(180, 0.035, 'square', 0.06);
+    if (bI%8===4) beep(440, 0.03, 'sine', 0.04);
+    mI++; bI++;
+    mTimer = setTimeout(tick, 128);
+  }
+  tick();
+}
+
+function stopMusic() {
+  mOn=false;
+  if (mTimer) { clearTimeout(mTimer); mTimer=null; }
+}
+</script>
+</body>
+</html>
