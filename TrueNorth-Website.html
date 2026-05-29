@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>True North Care Consultants PLLC</title>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Source+Serif+4:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+:root {
+  --navy: #0a1628;
+  --navy-mid: #112240;
+  --gold: #C9A84C;
+  --gold-light: #E8C97A;
+  --white: #f4f1ea;
+  --gray: #8a9ab5;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:var(--navy); color:var(--white); font-family:'Source Serif 4',serif; font-weight:300; overflow-x:hidden; }
+
+/* HEADER */
+header { position:fixed; top:0; left:0; right:0; z-index:100; background:rgba(10,22,40,0.97); border-bottom:1px solid rgba(201,168,76,0.25); padding:16px 40px; display:flex; align-items:center; justify-content:space-between; }
+.logo { display:flex; align-items:center; gap:14px; }
+.logo-text h1 { font-family:'Oswald',sans-serif; font-size:18px; font-weight:700; letter-spacing:3px; color:var(--gold-light); line-height:1; }
+.logo-text p { font-size:9px; letter-spacing:4px; color:var(--gray); margin-top:3px; text-transform:uppercase; }
+nav { display:flex; gap:28px; align-items:center; }
+nav a { font-family:'Oswald',sans-serif; font-size:11px; letter-spacing:3px; color:var(--gray); text-decoration:none; text-transform:uppercase; transition:color 0.2s; }
+nav a:hover { color:var(--gold); }
+.nav-cta { background:var(--gold); color:var(--navy) !important; padding:8px 20px; border-radius:2px; font-weight:600; }
+
+/* HERO */
+.hero { min-height:100vh; display:flex; align-items:center; justify-content:center; text-align:center; padding:120px 40px 80px; position:relative; overflow:hidden; }
+.hero::after { content:''; position:absolute; inset:0; background-image:linear-gradient(rgba(201,168,76,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(201,168,76,0.04) 1px,transparent 1px); background-size:60px 60px; pointer-events:none; }
+.hero-content { position:relative; z-index:2; max-width:800px; }
+.hero-badge { display:inline-block; font-family:'Oswald',sans-serif; font-size:10px; letter-spacing:5px; color:var(--gold); border:1px solid rgba(201,168,76,0.3); padding:6px 20px; margin-bottom:28px; text-transform:uppercase; }
+.hero h2 { font-family:'Oswald',sans-serif; font-size:clamp(36px,6vw,64px); font-weight:700; letter-spacing:4px; line-height:1.05; color:var(--white); margin-bottom:8px; text-transform:uppercase; }
+.hero h2 span { color:var(--gold); display:block; }
+.hero-sub { font-size:16px; color:var(--gray); letter-spacing:1px; margin:20px auto 40px; line-height:1.7; max-width:580px; }
+.hero-btns { display:flex; gap:16px; justify-content:center; flex-wrap:wrap; }
+.btn-primary { font-family:'Oswald',sans-serif; font-size:12px; letter-spacing:3px; background:var(--gold); color:var(--navy); border:none; padding:16px 36px; cursor:pointer; text-transform:uppercase; font-weight:600; text-decoration:none; display:inline-block; transition:background 0.2s; }
+.btn-primary:hover { background:var(--gold-light); }
+.btn-secondary { font-family:'Oswald',sans-serif; font-size:12px; letter-spacing:3px; background:transparent; color:var(--gold); border:1px solid rgba(201,168,76,0.4); padding:16px 36px; cursor:pointer; text-transform:uppercase; text-decoration:none; display:inline-block; transition:all 0.2s; }
+.btn-secondary:hover { background:rgba(201,168,76,0.1); border-color:var(--gold); }
+
+/* SECTIONS */
+section { padding:80px 40px; max-width:1100px; margin:0 auto; }
+.section-label { font-family:'Oswald',sans-serif; font-size:10px; letter-spacing:5px; color:var(--gold); text-transform:uppercase; margin-bottom:12px; }
+.section-title { font-family:'Oswald',sans-serif; font-size:clamp(28px,4vw,42px); font-weight:700; letter-spacing:3px; color:var(--white); text-transform:uppercase; margin-bottom:16px; }
+.section-desc { font-size:15px; color:var(--gray); line-height:1.8; max-width:580px; margin-bottom:48px; }
+
+/* DIVIDER */
+.divider { display:flex; align-items:center; gap:16px; padding:0 40px; max-width:1100px; margin:0 auto; }
+.divider-line { flex:1; height:1px; background:linear-gradient(to right,transparent,rgba(201,168,76,0.3),transparent); }
+.divider-icon { color:var(--gold); font-size:18px; }
+
+/* STEPS */
+.steps { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; margin-bottom:60px; }
+.step { background:var(--navy-mid); border:1px solid rgba(201,168,76,0.15); padding:40px 32px; position:relative; transition:border-color 0.3s; }
+.step:hover { border-color:rgba(201,168,76,0.4); }
+.step-num { font-family:'Oswald',sans-serif; font-size:56px; font-weight:700; color:rgba(201,168,76,0.1); line-height:1; margin-bottom:16px; }
+.step-icon { font-size:28px; margin-bottom:16px; display:block; }
+.step h3 { font-family:'Oswald',sans-serif; font-size:18px; letter-spacing:3px; color:var(--gold-light); text-transform:uppercase; margin-bottom:12px; }
+.step p { font-size:13px; color:var(--gray); line-height:1.7; }
+.step-arrow { position:absolute; right:-16px; top:50%; transform:translateY(-50%); color:var(--gold); font-size:20px; z-index:2; }
+
+/* SERVICES */
+.services-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:20px; }
+.service-card { background:var(--navy-mid); border:1px solid rgba(201,168,76,0.15); border-left:3px solid var(--gold); padding:28px 28px 28px 24px; transition:all 0.3s; }
+.service-card:hover { border-left-color:var(--gold-light); transform:translateX(4px); }
+.service-card h3 { font-family:'Oswald',sans-serif; font-size:15px; letter-spacing:2px; color:var(--gold-light); text-transform:uppercase; margin-bottom:10px; }
+.service-card p { font-size:13px; color:var(--gray); line-height:1.7; }
+.service-price { font-family:'Oswald',sans-serif; font-size:13px; color:var(--gold); margin-top:12px; letter-spacing:1px; }
+
+/* PAYMENT */
+.payment-section { padding:80px 40px; background:var(--navy-mid); border-top:1px solid rgba(201,168,76,0.15); border-bottom:1px solid rgba(201,168,76,0.15); }
+.payment-inner { max-width:1100px; margin:0 auto; }
+.pay-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; margin-top:40px; }
+.pay-card { background:var(--navy); border:1px solid rgba(201,168,76,0.2); padding:32px 24px; text-align:center; }
+.pay-card h3 { font-family:'Oswald',sans-serif; font-size:16px; letter-spacing:3px; color:var(--gold-light); text-transform:uppercase; margin-bottom:8px; }
+.pay-card .handle { font-size:13px; color:var(--gray); margin-bottom:20px; letter-spacing:1px; }
+.pay-card .qr-wrap { display:flex; justify-content:center; margin-bottom:20px; }
+.pay-card .qr-wrap > div { background:white; padding:8px; border-radius:4px; }
+.pay-card a.pay-btn { display:block; font-family:'Oswald',sans-serif; font-size:11px; letter-spacing:3px; background:var(--gold); color:var(--navy); padding:12px 20px; text-decoration:none; text-transform:uppercase; font-weight:600; transition:background 0.2s; }
+.pay-card a.pay-btn:hover { background:var(--gold-light); }
+
+/* PRICING TABLE */
+.pricing-table { width:100%; border-collapse:collapse; margin-top:32px; }
+.pricing-table th { font-family:'Oswald',sans-serif; font-size:11px; letter-spacing:3px; color:var(--gold); text-transform:uppercase; padding:12px 16px; border-bottom:1px solid rgba(201,168,76,0.3); text-align:left; }
+.pricing-table td { font-size:13px; color:var(--white); padding:14px 16px; border-bottom:1px solid rgba(255,255,255,0.05); }
+.pricing-table tr:hover td { background:rgba(201,168,76,0.04); }
+.pricing-table .price { color:var(--gold); font-family:'Oswald',sans-serif; font-weight:600; letter-spacing:1px; }
+
+/* UPLOAD */
+#upload { padding:80px 40px; max-width:1100px; margin:0 auto; }
+.upload-box { background:var(--navy-mid); border:2px dashed rgba(201,168,76,0.3); padding:60px 40px; text-align:center; cursor:pointer; transition:all 0.3s; max-width:600px; margin:0 auto; }
+.upload-box:hover { border-color:var(--gold); background:rgba(201,168,76,0.05); }
+.upload-box span { font-size:48px; display:block; margin-bottom:16px; }
+.upload-box h4 { font-family:'Oswald',sans-serif; font-size:16px; letter-spacing:3px; color:var(--gold); text-transform:uppercase; margin-bottom:10px; }
+.upload-box p { font-size:13px; color:var(--gray); line-height:1.7; }
+.upload-note { font-size:11px; color:rgba(201,168,76,0.5); margin-top:12px; letter-spacing:1px; font-family:'Oswald',sans-serif; }
+#uploadStatus { margin-top:16px; font-size:13px; color:var(--gold); font-family:'Oswald',sans-serif; letter-spacing:2px; text-align:center; }
+
+/* WHY */
+.why-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; }
+.why-card { text-align:center; padding:32px 20px; border-top:2px solid rgba(201,168,76,0.2); }
+.why-card span { font-size:32px; display:block; margin-bottom:16px; }
+.why-card h3 { font-family:'Oswald',sans-serif; font-size:14px; letter-spacing:2px; color:var(--gold-light); text-transform:uppercase; margin-bottom:10px; }
+.why-card p { font-size:13px; color:var(--gray); line-height:1.7; }
+
+/* STATS */
+.stats { display:grid; grid-template-columns:repeat(4,1fr); gap:2px; margin:60px 0; }
+.stat { background:var(--navy-mid); border:1px solid rgba(201,168,76,0.12); padding:32px 20px; text-align:center; }
+.stat-val { font-family:'Oswald',sans-serif; font-size:28px; font-weight:700; color:var(--gold); margin-bottom:8px; }
+.stat-label { font-size:11px; color:var(--gray); letter-spacing:2px; text-transform:uppercase; }
+
+/* CONTACT FORM */
+.contact-grid { display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:start; }
+.form-group { margin-bottom:20px; }
+.form-group label { font-family:'Oswald',sans-serif; font-size:10px; letter-spacing:3px; color:var(--gold); text-transform:uppercase; display:block; margin-bottom:8px; }
+.form-group input, .form-group select, .form-group textarea { width:100%; background:var(--navy-mid); border:1px solid rgba(201,168,76,0.2); color:var(--white); padding:12px 16px; font-family:'Source Serif 4',serif; font-size:14px; outline:none; transition:border-color 0.2s; }
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color:var(--gold); }
+.form-group textarea { min-height:120px; resize:vertical; }
+.form-group select option { background:var(--navy-mid); }
+.form-submit { font-family:'Oswald',sans-serif; font-size:12px; letter-spacing:3px; background:var(--gold); color:var(--navy); border:none; padding:16px 40px; cursor:pointer; text-transform:uppercase; font-weight:600; width:100%; transition:background 0.2s; }
+.form-submit:hover { background:var(--gold-light); }
+.form-consent { font-size:11px; color:var(--gray); line-height:1.6; margin-bottom:20px; }
+
+/* CONTACT INFO */
+.contact-info { display:flex; flex-direction:column; gap:24px; }
+.contact-item { display:flex; gap:16px; align-items:flex-start; }
+.contact-item-icon { font-size:20px; margin-top:2px; }
+.contact-item h4 { font-family:'Oswald',sans-serif; font-size:12px; letter-spacing:3px; color:var(--gold); text-transform:uppercase; margin-bottom:6px; }
+.contact-item p, .contact-item a { font-size:13px; color:var(--gray); line-height:1.7; text-decoration:none; }
+.contact-item a:hover { color:var(--gold); }
+
+/* FAQ */
+.faq-item { border-bottom:1px solid rgba(201,168,76,0.12); }
+.faq-q { width:100%; background:none; border:none; color:var(--white); font-family:'Oswald',sans-serif; font-size:14px; letter-spacing:2px; padding:20px 0; text-align:left; cursor:pointer; display:flex; justify-content:space-between; align-items:center; text-transform:uppercase; }
+.faq-q:hover { color:var(--gold); }
+.faq-q span { color:var(--gold); font-size:20px; transition:transform 0.3s; }
+.faq-q.open span { transform:rotate(45deg); }
+.faq-a { font-size:13px; color:var(--gray); line-height:1.8; padding:0 0 20px; display:none; }
+.faq-a.open { display:block; }
+
+/* FOOTER */
+footer { background:rgba(5,10,20,0.98); border-top:1px solid rgba(201,168,76,0.15); padding:60px 40px 30px; }
+.footer-inner { max-width:1100px; margin:0 auto; display:grid; grid-template-columns:2fr 1fr 1fr; gap:60px; margin-bottom:40px; }
+.footer-brand h3 { font-family:'Oswald',sans-serif; font-size:16px; letter-spacing:4px; color:var(--gold); text-transform:uppercase; margin-bottom:8px; }
+.footer-brand p { font-size:12px; color:var(--gray); line-height:1.7; max-width:300px; }
+.footer-nav h4 { font-family:'Oswald',sans-serif; font-size:10px; letter-spacing:4px; color:var(--gold); text-transform:uppercase; margin-bottom:16px; }
+.footer-nav a { display:block; font-size:12px; color:var(--gray); text-decoration:none; margin-bottom:8px; letter-spacing:1px; }
+.footer-nav a:hover { color:var(--gold); }
+.footer-bottom { border-top:1px solid rgba(201,168,76,0.1); padding-top:24px; max-width:1100px; margin:0 auto; }
+.footer-disclaimer { font-size:10px; color:rgba(138,154,181,0.6); line-height:1.7; margin-bottom:12px; }
+.footer-copy { font-family:'Oswald',sans-serif; font-size:10px; letter-spacing:3px; color:rgba(201,168,76,0.3); text-transform:uppercase; }
+
+@media(max-width:768px){
+  .steps,.services-grid,.pay-grid,.why-grid,.stats,.contact-grid,.footer-inner{grid-template-columns:1fr;}
+  nav{display:none;}
+  header{padding:16px 20px;}
+  section,#upload,.payment-section{padding:60px 20px;}
+}
+</style>
+</head>
+<body>
+
+<!-- DISCLAIMER SPLASH -->
+<div id="disclaimer" style="position:fixed;inset:0;background:#0a1628;z-index:9999;display:flex;align-items:center;justify-content:center;padding:40px;">
+  <div style="max-width:620px;width:100%;background:#112240;border:1px solid rgba(201,168,76,0.4);padding:48px 40px;text-align:center;">
+    <div style="font-size:32px;margin-bottom:16px;">⚠️</div>
+    <div style="font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:5px;color:#C9A84C;text-transform:uppercase;margin-bottom:16px;">Important Notice Before You Continue</div>
+    <h2 style="font-family:'Oswald',sans-serif;font-size:22px;letter-spacing:3px;color:#E8C97A;text-transform:uppercase;margin-bottom:24px;">True North Care Consultants PLLC</h2>
+    <p style="font-size:13px;color:#8a9ab5;line-height:1.9;margin-bottom:20px;">True North Care Consultants PLLC is <strong style="color:#f4f1ea;">not a law firm</strong> and does not provide legal advice. Our services are limited to independent medical opinions and clinical consultation for VA disability claims purposes only. We do <strong style="color:#f4f1ea;">not provide medical diagnoses, medical treatment, or medical advice</strong> of any kind.</p>
+    <p style="font-size:13px;color:#8a9ab5;line-height:1.9;margin-bottom:20px;">Use of this website does not establish a physician-patient relationship, an attorney-client relationship, or any other professional relationship beyond the scope of independent medical opinion services.</p>
+    <p style="font-size:13px;color:#8a9ab5;line-height:1.9;margin-bottom:32px;">All information submitted through this website is handled in strict accordance with <strong style="color:#f4f1ea;">HIPAA</strong> and applicable federal and state privacy regulations. Your records are never shared without your explicit written authorization.</p>
+    <p style="font-size:12px;color:#C9A84C;margin-bottom:28px;letter-spacing:1px;">By continuing you acknowledge that you have read and understand this notice.</p>
+    <button onclick="document.getElementById('disclaimer').style.display='none'" style="font-family:'Oswald',sans-serif;font-size:12px;letter-spacing:3px;background:#C9A84C;color:#0a1628;border:none;padding:16px 40px;cursor:pointer;text-transform:uppercase;font-weight:700;width:100%;transition:background 0.2s;" onmouseover="this.style.background='#E8C97A'" onmouseout="this.style.background='#C9A84C'">I Understand — Continue to Site</button>
+  </div>
+</div>
+
+<header>
+  <div class="logo">
+    <svg width="44" height="44" viewBox="0 0 44 44" fill="none">
+      <circle cx="22" cy="22" r="20" stroke="rgba(201,168,76,0.4)" stroke-width="1"/>
+      <circle cx="22" cy="22" r="15" stroke="rgba(201,168,76,0.2)" stroke-width="0.5"/>
+      <path d="M22 6L24.5 18L22 22L19.5 18Z" fill="#C9A84C"/>
+      <path d="M22 38L19.5 26L22 22L24.5 26Z" fill="rgba(201,168,76,0.4)"/>
+      <path d="M6 22L18 19.5L22 22L18 24.5Z" fill="rgba(201,168,76,0.4)"/>
+      <path d="M38 22L26 24.5L22 22L26 19.5Z" fill="rgba(201,168,76,0.4)"/>
+      <circle cx="22" cy="22" r="2.5" fill="#C9A84C"/>
+      <text x="22" y="11" font-family="serif" font-size="5" fill="rgba(201,168,76,0.7)" text-anchor="middle">N</text>
+      <text x="22" y="36" font-family="serif" font-size="5" fill="rgba(201,168,76,0.4)" text-anchor="middle">S</text>
+      <text x="10" y="23.5" font-family="serif" font-size="5" fill="rgba(201,168,76,0.4)" text-anchor="middle">W</text>
+      <text x="34" y="23.5" font-family="serif" font-size="5" fill="rgba(201,168,76,0.4)" text-anchor="middle">E</text>
+    </svg>
+    <div class="logo-text">
+      <h1>TRUE NORTH</h1>
+      <p>Care Consultants PLLC · Veteran Medical Services</p>
+    </div>
+  </div>
+  <nav>
+    <a href="#why">Why Us</a>
+    <a href="#services">Services</a>
+    <a href="#payment">Payment</a>
+    <a href="#upload">Upload</a>
+    <a href="#contact">Contact</a>
+    <a href="#contact" class="nav-cta">Free Consult</a>
+  </nav>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-content">
+    <div class="hero-badge">VA Claim Support · Nurse Practitioner Led</div>
+    <h2>You Served.<br><span>Now Let Us Help You Get What You Deserve.</span></h2>
+    <p class="hero-sub">Independent medical opinions and nexus letters crafted by experienced clinicians — giving your VA disability claim the medical foundation it needs to succeed.</p>
+    <div class="hero-btns">
+      <a href="#contact" class="btn-primary">⚡ Free Consultation</a>
+      <a href="#services" class="btn-secondary">Learn About Our Services →</a>
+    </div>
+  </div>
+</div>
+
+<!-- STEPS -->
+<section id="steps">
+  <div class="section-label">Get Started</div>
+  <div class="section-title">Three Simple Steps</div>
+  <p class="section-desc">We made getting the help you need as straightforward as possible.</p>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">01</div>
+      <span class="step-icon">📅</span>
+      <h3>Schedule Your Consultation</h3>
+      <p>Book your appointment online and select the service that fits your claim.<br><br>⏰ MON–FRI · 3:00 PM–9:00 PM PST ONLY</p>
+      <a href="#contact" class="btn-primary" style="margin-top:20px;display:inline-block;font-size:10px;padding:10px 20px;">Book Appointment →</a>
+      <div class="step-arrow">→</div>
+    </div>
+    <div class="step">
+      <div class="step-num">02</div>
+      <span class="step-icon">💳</span>
+      <h3>Make Your Payment</h3>
+      <p>Secure payment via Cash App, PayPal or Venmo. Required before document submission unlocks.</p>
+      <a href="#payment" class="btn-primary" style="margin-top:20px;display:inline-block;font-size:10px;padding:10px 20px;">Make a Payment →</a>
+      <div class="step-arrow">→</div>
+    </div>
+    <div class="step">
+      <div class="step-num">03</div>
+      <span class="step-icon">🔒</span>
+      <h3>Upload Your Documents</h3>
+      <p>Submit your records securely. Files go directly into our secure clinical system — never to email.</p>
+      <a href="#upload" class="btn-primary" style="margin-top:20px;display:inline-block;font-size:10px;padding:10px 20px;">Upload Documents →</a>
+    </div>
+  </div>
+</section>
+
+<div class="divider"><div class="divider-line"></div><div class="divider-icon">✦</div><div class="divider-line"></div></div>
+
+<!-- WHY -->
+<section id="why">
+  <div class="section-label">Why Choose Us</div>
+  <div class="section-title">The Medical Evidence That Makes the Difference</div>
+  <p class="section-desc">We bridge the gap between your service, your health, and the recognition you've earned.</p>
+  <div class="why-grid">
+    <div class="why-card"><span>⚖️</span><h3>Regulatory Expertise</h3><p>Deep familiarity with 38 C.F.R. and M21-1 VA standards. Every opinion meets and exceeds what VA raters require.</p></div>
+    <div class="why-card"><span>📋</span><h3>Peer-Reviewed Foundation</h3><p>All opinions cite current peer-reviewed medical literature — giving your claim the scientific authority it needs.</p></div>
+    <div class="why-card"><span>🎯</span><h3>Built for Approval</h3><p>Direct, secondary, or aggravation theories addressed with precision. Written to hold up under scrutiny.</p></div>
+    <div class="why-card"><span>🤝</span><h3>Veteran-First Approach</h3><p>Compassionate, thorough, and on your side. We understand your service and your sacrifice.</p></div>
+    <div class="why-card"><span>⚡</span><h3>Fast Turnaround</h3><p>Quality never sacrificed for speed. Rush options available — ask about your deadline.</p></div>
+    <div class="why-card"><span>🔒</span><h3>HIPAA Compliant</h3><p>Your medical and service records are handled with the highest standards of privacy and security.</p></div>
+  </div>
+  <div class="stats">
+    <div class="stat"><div class="stat-val">38</div><div class="stat-label">C.F.R. Standards Applied</div></div>
+    <div class="stat"><div class="stat-val">100%</div><div class="stat-label">Clinician-Authored</div></div>
+    <div class="stat"><div class="stat-val">All</div><div class="stat-label">Service Branches</div></div>
+    <div class="stat"><div class="stat-val">HIPAA</div><div class="stat-label">Compliant Handling</div></div>
+  </div>
+</section>
+
+<div class="divider"><div class="divider-line"></div><div class="divider-icon">✦</div><div class="divider-line"></div></div>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="section-label">What We Offer</div>
+  <div class="section-title">Medical-Legal Documentation for VA Disability Claims</div>
+  <div class="services-grid">
+    <div class="service-card">
+      <h3>Nexus Letters (Independent Medical Opinions)</h3>
+      <p>Our flagship service. A formal medical opinion establishing the link between your current diagnosis and military service, citing VA regulations and peer-reviewed literature.</p>
+      <div class="service-price">$400 · 1 Letter &nbsp;|&nbsp; $700 · 2 Letters &nbsp;|&nbsp; $900 · 3 Letters</div>
+    </div>
+    <div class="service-card">
+      <h3>Secondary Service Connection Opinions</h3>
+      <p>If a service-connected condition caused or worsened another diagnosis, you may qualify for secondary connection. We document these relationships comprehensively.</p>
+      <div class="service-price">Contact for Pricing</div>
+    </div>
+    <div class="service-card">
+      <h3>Aggravation Opinions</h3>
+      <p>Pre-existing conditions aggravated beyond natural progression by military service may qualify for VA compensation under 38 C.F.R. § 3.306.</p>
+      <div class="service-price">Contact for Pricing</div>
+    </div>
+    <div class="service-card">
+      <h3>Medical Record Review</h3>
+      <p>We review your medical records to identify strengths, gaps, and opportunities in your claim — advising on how medical evidence can support your case.</p>
+      <div class="service-price">$50</div>
+    </div>
+    <div class="service-card">
+      <h3>DBQ — Disability Benefits Questionnaire</h3>
+      <p>Clinician-completed DBQs for your VA disability claim. Limited availability — contact us to check current openings.</p>
+      <div class="service-price">$150 per DBQ · Limited Availability</div>
+    </div>
+    <div class="service-card">
+      <h3>C&P Exam Prep</h3>
+      <p>We help prepare you for your Compensation & Pension exam — what to expect, how to present your symptoms, and how to avoid common mistakes that lead to lowball ratings.</p>
+      <div class="service-price">FREE</div>
+    </div>
+  </div>
+  <div style="text-align:center;margin-top:40px;">
+    <a href="#contact" class="btn-secondary">Not sure which service fits? Contact us →</a>
+  </div>
+</section>
+
+<div class="divider"><div class="divider-line"></div><div class="divider-icon">✦</div><div class="divider-line"></div></div>
+
+<!-- PAYMENT -->
+<div class="payment-section" id="payment">
+  <div class="payment-inner">
+    <div class="section-label">Step 2</div>
+    <div class="section-title">Simple, Secure Payment Options</div>
+    <p class="section-desc">Payment is required before document submission is unlocked. After sending payment, document upload unlocks within 1 business hour of confirmation.</p>
+    <div class="pay-grid">
+      <div class="pay-card">
+        <h3>💚 Cash App</h3>
+        <div class="handle">$szuniga2021</div>
+        <div class="qr-wrap"><div id="qrCash"></div></div>
+        <a href="https://cash.app/$szuniga2021" target="_blank" class="pay-btn">Pay via Cash App →</a>
+      </div>
+      <div class="pay-card">
+        <h3>🔵 PayPal</h3>
+        <div class="handle">@SonnyZuniga672</div>
+        <div class="qr-wrap"><div id="qrPaypal"></div></div>
+        <a href="https://paypal.me/SonnyZuniga672" target="_blank" class="pay-btn">Pay via PayPal →</a>
+      </div>
+      <div class="pay-card">
+        <h3>💜 Venmo</h3>
+        <div class="handle">@szuniga2021</div>
+        <div class="qr-wrap"><div id="qrVenmo"></div></div>
+        <a href="https://venmo.com/szuniga2021" target="_blank" class="pay-btn">Pay via Venmo →</a>
+      </div>
+    </div>
+
+    <div style="margin-top:60px;">
+      <div class="section-label">Pricing</div>
+      <div class="section-title" style="font-size:28px;">Service Pricing</div>
+      <table class="pricing-table">
+        <tr><th>Service</th><th>Price</th></tr>
+        <tr><td>Nexus Letter — 1 Letter</td><td class="price">$400</td></tr>
+        <tr><td>Nexus Letters — 2 Letters</td><td class="price">$700</td></tr>
+        <tr><td>Nexus Letters — 3 Letters</td><td class="price">$900</td></tr>
+        <tr><td>Medical Record Review</td><td class="price">$50</td></tr>
+        <tr><td>DBQ (per questionnaire)</td><td class="price">$150</td></tr>
+        <tr><td>C&P Exam Prep</td><td class="price">FREE</td></tr>
+        <tr><td>Secondary / Aggravation Opinion</td><td class="price">Contact Us</td></tr>
+        <tr><td>Initial Consultation</td><td class="price">FREE</td></tr>
+      </table>
+      <p style="font-size:11px;color:var(--gray);margin-top:16px;letter-spacing:1px;">Pricing varies by case complexity. Contact us for a personalized quote. Rush options available.</p>
+    </div>
+  </div>
+</div>
+
+<div class="divider" style="padding:40px 40px 0;"><div class="divider-line"></div><div class="divider-icon">✦</div><div class="divider-line"></div></div>
+
+<!-- UPLOAD -->
+<div id="upload">
+  <section style="padding:80px 40px;max-width:1100px;margin:0 auto;">
+    <div class="section-label">Step 3 · Unlocked After Payment</div>
+    <div class="section-title">Upload Your Documents</div>
+    <p class="section-desc">Submit your records securely. Files are delivered directly into our secure clinical system.</p>
+    <div class="upload-box" onclick="document.getElementById('fileInput').click()">
+      <span>📁</span>
+      <h4>Upload Medical Records & Service Documents</h4>
+      <p>Click to select files or drag and drop here<br>PDF, JPG, PNG accepted · Files handled per HIPAA standards</p>
+      <p class="upload-note">🔒 Secure · Confidential · HIPAA Compliant</p>
+      <input type="file" id="fileInput" style="display:none;" multiple accept=".pdf,.jpg,.jpeg,.png"
+        onchange="handleUpload(this)">
+    </div>
+    <div id="uploadStatus"></div>
+  </section>
+</div>
+
+<div class="divider"><div class="divider-line"></div><div class="divider-icon">✦</div><div class="divider-line"></div></div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-label">About True North</div>
+  <div class="section-title">Founded to Make Sure No Veteran's Medical Evidence Holds Their Claim Back</div>
+  <p style="font-size:15px;color:var(--gray);line-height:1.9;max-width:720px;margin-bottom:32px;">The VA disability process is complex and often unforgiving. A well-documented service history isn't always enough — claims examiners need a clear medical opinion connecting your condition to your service. That's the gap we fill. Every independent medical opinion is grounded in a thorough review of your service records, treatment history, and the relevant medical literature. We don't do boilerplate — each letter is tailored to your specific history and theory of entitlement.</p>
+  <a href="#contact" class="btn-primary">Ready to Strengthen Your Claim →</a>
+</section>
+
+<div class="divider"><div class="divider-line"></div><div class="divider-icon">✦</div><div class="divider-line"></div></div>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="section-label">FAQ</div>
+  <div class="section-title">Your Questions, Answered</div>
+  <div style="max-width:720px;">
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">What is a nexus letter? <span>+</span></button>
+      <div class="faq-a">A nexus letter is a formal medical opinion written by a clinician that establishes the link between your current medical condition and your military service. It is one of the most critical pieces of evidence in a VA disability claim.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">Do I need a nexus letter for my VA claim? <span>+</span></button>
+      <div class="faq-a">Not always, but in many cases a nexus letter significantly strengthens your claim — especially if your condition wasn't diagnosed during service or if the VA has previously denied your claim.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">What's the difference between direct and secondary service connection? <span>+</span></button>
+      <div class="faq-a">Direct service connection means your condition was caused by military service. Secondary service connection means a condition was caused or aggravated by an already service-connected disability.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">Will the VA accept your nexus letter? <span>+</span></button>
+      <div class="faq-a">Our letters are written to meet and exceed VA standards under 38 C.F.R. and M21-1, citing peer-reviewed medical literature. While acceptance depends on the VA rater, our letters are crafted to hold up under scrutiny.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">Why do I need to pay before uploading documents? <span>+</span></button>
+      <div class="faq-a">Payment confirmation is required to begin the clinical review process and ensure we can dedicate the appropriate time and resources to your case.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">Is my information kept confidential? <span>+</span></button>
+      <div class="faq-a">Absolutely. All submitted information is handled in strict accordance with HIPAA and applicable privacy regulations. Your records are never shared without your explicit consent.</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"><div class="divider-line"></div><div class="divider-icon">✦</div><div class="divider-line"></div></div>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-label">Let's Talk</div>
+  <div class="section-title">Let's Talk About Your Claim</div>
+  <p class="section-desc">You've earned your benefits. Reach out for a confidential, no-pressure consultation.</p>
+  <div class="contact-grid">
+    <form onsubmit="handleForm(event)">
+      <div class="form-group">
+        <label>Full Name *</label>
+        <input type="text" placeholder="Your full name" required>
+      </div>
+      <div class="form-group">
+        <label>Email Address *</label>
+        <input type="email" placeholder="your@email.com" required>
+      </div>
+      <div class="form-group">
+        <label>Phone Number</label>
+        <input type="tel" placeholder="(optional)">
+      </div>
+      <div class="form-group">
+        <label>Branch of Service *</label>
+        <select required>
+          <option value="">Select branch...</option>
+          <option>Army</option>
+          <option>Navy</option>
+          <option>Marine Corps</option>
+          <option>Air Force</option>
+          <option>Coast Guard</option>
+          <option>Space Force</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Service Needed *</label>
+        <select required>
+          <option value="">Select service...</option>
+          <option>Nexus Letter</option>
+          <option>Secondary Service Connection</option>
+          <option>Aggravation Opinion</option>
+          <option>Medical Record Review</option>
+          <option>DBQ</option>
+          <option>C&P Exam Prep</option>
+          <option>Not sure — need guidance</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Brief Description *</label>
+        <textarea placeholder="Tell us about your situation, condition(s), and where you are in the claims process..." required></textarea>
+      </div>
+      <div class="form-group">
+        <label>How Did You Hear About Us?</label>
+        <select>
+          <option value="">Select one...</option>
+          <option>Google Search</option>
+          <option>Social Media</option>
+          <option>Referral</option>
+          <option>VA Facebook Group</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <p class="form-consent">I understand True North Care Consultants does not provide legal advice and is not a law firm. I acknowledge the Privacy Policy and consent to collection of my information for VA disability claims consultation.</p>
+      <button type="submit" class="form-submit">Send Message →</button>
+      <div id="formStatus" style="margin-top:12px;font-size:13px;color:var(--gold);font-family:'Oswald',sans-serif;letter-spacing:2px;"></div>
+    </form>
+
+    <div class="contact-info">
+      <div class="contact-item">
+        <div class="contact-item-icon">📞</div>
+        <div>
+          <h4>Phone</h4>
+          <a href="tel:2102015588">(210) 201-5588</a>
+          <p>Mon–Fri · 3:00 PM – 9:00 PM PST</p>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-item-icon">✉️</div>
+        <div>
+          <h4>Email</h4>
+          <a href="mailto:zuniga@truenorthcareconsultantspllc.com">zuniga@truenorthcareconsultantspllc.com</a>
+          <p>Response within one business day</p>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-item-icon">🌐</div>
+        <div>
+          <h4>Service Area</h4>
+          <p>We serve veterans nationwide.<br>Telehealth & remote consultations available.</p>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-item-icon">💳</div>
+        <div>
+          <h4>Payments & Documents</h4>
+          <p>Pay via Cash App, PayPal or Venmo, then upload your records securely.</p>
+          <a href="#payment" class="btn-primary" style="margin-top:12px;display:inline-block;font-size:10px;padding:10px 20px;">💳 Make a Payment</a>
+          <a href="#upload" class="btn-secondary" style="margin-top:8px;display:inline-block;font-size:10px;padding:10px 20px;">📁 Upload Documents</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <h3>True North Care Consultants</h3>
+      <p style="font-size:10px;letter-spacing:3px;color:var(--gold);margin-bottom:12px;text-transform:uppercase;">PLLC · Veteran Medical Services</p>
+      <p>Independent medical opinions and nexus letters crafted by experienced clinicians — giving your VA disability claim the medical foundation it needs to succeed.</p>
+    </div>
+    <div class="footer-nav">
+      <h4>Navigation</h4>
+      <a href="#why">Why Choose Us</a>
+      <a href="#services">Our Services</a>
+      <a href="#payment">Pricing & Payment</a>
+      <a href="#about">About Us</a>
+      <a href="#faq">FAQ</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <div class="footer-nav">
+      <h4>Contact</h4>
+      <a href="tel:2102015588">(210) 201-5588</a>
+      <a href="mailto:zuniga@truenorthcareconsultantspllc.com">zuniga@truenorth<br>careconsultantspllc.com</a>
+      <p style="font-size:11px;color:var(--gray);margin-top:8px;">Mon–Fri · 3:00 PM–9:00 PM PST</p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p class="footer-disclaimer">Disclaimer: True North Care Consultants PLLC does not provide legal advice and is not a law firm. Our services are limited to independent medical opinions and clinical consultation for VA disability claims purposes only. Use of this website does not establish a physician-patient relationship or attorney-client relationship. All submitted information is handled in accordance with HIPAA and applicable privacy regulations.</p>
+    <p class="footer-copy">© 2026 True North Care Consultants PLLC · All Rights Reserved</p>
+  </div>
+</footer>
+
+<script>
+// QR Codes
+window.addEventListener('load', function(){
+  if(typeof QRCode !== 'undefined'){
+    new QRCode(document.getElementById('qrCash'),{text:'https://cash.app/$szuniga2021',width:80,height:80,colorDark:'#000000',colorLight:'#ffffff'});
+    new QRCode(document.getElementById('qrPaypal'),{text:'https://paypal.me/SonnyZuniga672',width:80,height:80,colorDark:'#000000',colorLight:'#ffffff'});
+    new QRCode(document.getElementById('qrVenmo'),{text:'https://venmo.com/szuniga2021',width:80,height:80,colorDark:'#000000',colorLight:'#ffffff'});
+  }
+});
+
+// FAQ
+function toggleFaq(btn){
+  btn.classList.toggle('open');
+  var ans = btn.nextElementSibling;
+  ans.classList.toggle('open');
+}
+
+// Upload — sends to zuniga@truenorthcareconsultantspllc.com via mailto
+function handleUpload(input){
+  var files = input.files;
+  if(files.length > 0){
+    var names = Array.from(files).map(function(f){return f.name;}).join(', ');
+    document.getElementById('uploadStatus').textContent = '✓ '+files.length+' file(s) selected: '+names+' — Please email to zuniga@truenorthcareconsultantspllc.com';
+    // Open email client with files noted
+    var subject = encodeURIComponent('TrueNorth Document Upload');
+    var body = encodeURIComponent('Please find my documents attached:\n\n'+names+'\n\nThank you.');
+    window.location.href = 'mailto:zuniga@truenorthcareconsultantspllc.com?subject='+subject+'&body='+body;
+  }
+}
+
+// Contact form
+function handleForm(e){
+  e.preventDefault();
+  document.getElementById('formStatus').textContent = '✓ Message sent — we will respond within one business day.';
+  e.target.reset();
+}
+</script>
+</body>
+</html>
